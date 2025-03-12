@@ -15,6 +15,7 @@ import {
   ThemeProvider,
   PreventFlashOnWrongTheme,
 } from "remix-themes";
+import { Toaster } from "~/components/ui/sonner";
 
 import type { Route } from "./+types/root";
 import { themeSessionResolver } from "./sessions.server";
@@ -85,7 +86,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       specifiedTheme={data?.theme as Theme}
     >
       <NonceProvider>
-        <InnerLayout ssrTheme={Boolean(data?.theme)}>{children}</InnerLayout>
+        <InnerLayout ssrTheme={Boolean(data?.theme)}>
+          {children}
+          <Toaster />
+        </InnerLayout>
       </NonceProvider>
     </ThemeProvider>
   );

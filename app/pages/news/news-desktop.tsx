@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Ellipsis, ArrowRight, Menu, Calendar } from "lucide-react";
+import { Ellipsis, ArrowRight, Menu, Calendar1 } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 import { Input } from "~/components/ui/input";
@@ -10,12 +10,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   Card,
   CardTitle,
-  CardFooter,
   CardContent,
   CardHeader,
   CardDescription,
 } from "~/components/ui/card";
-import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -23,15 +21,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/components/ui/sheet";
+import NewsSearch from "./news-search";
 
 const TEST_TABS = [
   "Politics",
@@ -82,6 +72,24 @@ const RECOMMENDED_TRENDING = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
     image: "https://i.ibb.co/4pSQJ06/apple-google.png",
   },
+  {
+    title: "CNN",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
+  },
+  {
+    title: "BBC",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
+  },
+  {
+    title: "Al Jazeera",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
+  },
 ];
 
 const NEWS_DATA = [
@@ -106,41 +114,6 @@ const NEWS_DATA = [
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
   },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Dribbble",
-    headline: "Dribbble Launches New Platform to Help Companies Hire Designers",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Webmoney",
-    headline: "WebMoney Adds Cryptocurrency Wallet for Users",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Stripe",
-    headline: "Stripe Launches New Payment Solution for Online Businesses",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Microsoft",
-    headline: "Microsoft Acquires AI Nuance Communications for $19.7 Billion",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Dribbble",
-    headline: "Dribbble Launches New Platform to Help Companies Hire Designers",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
 ];
 
 export function NewsDesktop() {
@@ -157,22 +130,7 @@ export function NewsDesktop() {
               <Menu className="size-5 opacity-50" />
             </Button>
 
-            <Sheet>
-              <SheetTrigger>
-                <Button variant="outline" className="rounded-2xl size-10">
-                  <Search className="size-5 opacity-50" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Are you absolutely sure?</SheetTitle>
-                  <SheetDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </SheetDescription>
-                </SheetHeader>
-              </SheetContent>
-            </Sheet>
+            <NewsSearch />
           </div>
 
           <div className="text-center flex-1">
@@ -223,7 +181,7 @@ export function NewsDesktop() {
         <div className="max-lg:hidden flex justify-end self-end flex-[0.4]">
           <div className="p-10">
             <div className="flex items-center space-x-2 text-gray-500 text-sm">
-              <Calendar className="size-4" />
+              <Calendar1 className="size-4" />
               <span>Mon 8 May 2023</span>
             </div>
 
@@ -247,7 +205,7 @@ export function NewsDesktop() {
               {TEST_TRENDING.map((feed, index) => (
                 <CarouselItem key={index}>
                   <div className="p-4">
-                    <Card>
+                    <Card className="p-0 rounded-2xl overflow-hidden">
                       <CardContent className="flex h-full w-full p-0 aspect-square items-center justify-center">
                         {/* <span className="text-4xl font-semibold">
                           {index + 1}
@@ -262,8 +220,8 @@ export function NewsDesktop() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="size-15" />
+            <CarouselNext className="size-15" />
           </Carousel>
         </div>
       </section>
@@ -271,54 +229,52 @@ export function NewsDesktop() {
       {/* END OF TRENDING NOW */}
 
       {/* START OF RESOURCES LIST */}
-      <section className="xl:px-[15rem] h-dvh my-10">
-        <div>
-          <ScrollArea
-            aria-orientation="horizontal"
-            className="w-full whitespace-nowrap"
-          >
-            <div className="flex justify-center items-center w-full gap-10 flex-wrap">
-              {NEWS_DATA.map((news, index) => (
-                <div
+      <section className="w-[70%] self-center h-dvh my-10">
+        <ScrollArea
+          aria-orientation="horizontal"
+          className="w-full whitespace-nowrap"
+        >
+          <div className="flex items-center w-full gap-10 flex-wrap">
+            {NEWS_DATA.map((news, index) => (
+              <div
+                key={index}
+                className="flex items-start space-x-3 max-w-[350px] text-wrap p-1"
+              >
+                {/* Logo */}
+                <Avatar
                   key={index}
-                  className="flex items-start space-x-3 max-w-[350px] text-wrap p-1"
+                  className="size-10flex items-center justify-center"
                 >
-                  {/* Logo */}
-                  <Avatar
-                    key={index}
-                    className="size-10flex items-center justify-center"
-                  >
-                    <AvatarImage className="rounded-full" src={news.logo} />
-                    <AvatarFallback className="text-[12px]">
-                      {news.headline.slice(0, 3).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <AvatarImage className="rounded-full" src={news.logo} />
+                  <AvatarFallback className="text-[12px]">
+                    {news.headline.slice(0, 3).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
 
-                  {/* Text Content */}
-                  <div>
-                    <p className="text-gray-600 font-medium">{news.company}</p>
-                    <h2 className="text-lg font-semibold">{news.headline}</h2>
-                    <h2 className="text-sm font-light mt-5">
-                      {news.description}
-                    </h2>
-                  </div>
+                {/* Text Content */}
+                <div>
+                  <p className="text-gray-600 font-medium">{news.company}</p>
+                  <h2 className="text-lg font-semibold">{news.headline}</h2>
+                  <h2 className="text-sm font-light mt-5">
+                    {news.description}
+                  </h2>
                 </div>
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" hidden />
-          </ScrollArea>
-        </div>
+              </div>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" hidden />
+        </ScrollArea>
       </section>
       {/* END OF RESOURCES LIST */}
 
       {/* START OF RECOMMENDED */}
-      <section className="px-[17rem]">
-        <div>
-          <h2 className="text-l font-semibold mb-4">Recommended</h2>
+      <section className="w-[70%] self-center">
+        <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
+        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
           {RECOMMENDED_TRENDING.map((feed, index) => (
-            <React.Fragment key={feed.title}>
-              <Card className="min-w-full h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
+            <div key={feed.title}>
+              <Card className=" max-w-[375px] h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
                 <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
                   <img className="flex-1 object-fill" src={feed.image} />
                 </CardHeader>
@@ -343,9 +299,9 @@ export function NewsDesktop() {
               </Card>
 
               {index !== RECOMMENDED_TRENDING.length - 1 && (
-                <Separator className="my-4 h-[2px] bg-border/70" />
+                <Separator className="my-4 h-[2px] max-w-[375px]  bg-border/70" />
               )}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       </section>
