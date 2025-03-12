@@ -9,3 +9,10 @@ export const getAllArticles = async () => {
   // Make a request to the NewsAPI API
   // Make a request to the Guardian API
 };
+
+// last api package
+
+export const searchArticles = async () => {
+  // Make a request to the NewsAPI API
+  // Make a request to the Guardian API
+};
