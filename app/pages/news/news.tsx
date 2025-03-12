@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import Guardian from "guardian-js";
-import NewsAPI from "~/lib/news-api";
+import { useState } from "react";
 
 import { Search, Ellipsis, ArrowRight, Calendar1 } from "lucide-react";
 
@@ -28,6 +26,8 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "~/components/ui/carousel";
+import type { Route } from "../../+types/root";
+import { getAllArticles } from "~/lib/api";
 
 const TEST_TABS = [
   "Politics",
@@ -121,27 +121,12 @@ const NEWS_DATA = [
   },
 ];
 
-export function News() {
-  const newsapi = new NewsAPI("038e35511d5747878a2c0137fddcae6b");
-  const guardian = new Guardian("e8e0a62b-31c1-4d40-958a-9cc4f3b5b742", false);
+export async function loader({}: Route.ComponentProps) {
+  const articles = await getAllArticles();
+  return articles;
+}
 
-  useEffect(() => {
-    async function fetch() {
-      // const topHeadlines = await newsapi.getTopHeadlines({
-      //   country: "us",
-      //   category: "business",
-      //   pageSize: 20,
-      //   page: 1,
-      // });
-      // const football = guardian.content.search("football", {
-      //   tag: "sports",
-      // });
-      // console.log(football);
-    }
-
-    fetch();
-  }, []);
-
+export function News({ loaderData }: Route.ComponentProps) {
   const [tab, setTab] = useState(TEST_TABS[0]);
   const [visible, setVisible] = useState(false);
 
