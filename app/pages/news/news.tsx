@@ -26,8 +26,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "~/components/ui/carousel";
-import type { Route } from "../../+types/root";
-import { getAllArticles } from "~/lib/api";
+import type { INewsApiArticle } from "~/lib/news-api/types";
 
 const TEST_TABS = [
   "Politics",
@@ -121,12 +120,7 @@ const NEWS_DATA = [
   },
 ];
 
-export async function loader({}: Route.ComponentProps) {
-  const articles = await getAllArticles();
-  return articles;
-}
-
-export function News({ loaderData }: Route.ComponentProps) {
+export function News({ articles }: { articles: INewsApiArticle[] }) {
   const [tab, setTab] = useState(TEST_TABS[0]);
   const [visible, setVisible] = useState(false);
 
@@ -438,28 +432,31 @@ export function News({ loaderData }: Route.ComponentProps) {
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
         <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
-          {RECOMMENDED_TRENDING.map((feed, index) => (
-            <div key={feed.title}>
+          {articles.map((article, index) => (
+            <div key={article.title}>
               <Card className=" max-w-[375px] h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
                 <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
-                  <img className="flex-1 object-fill" src={feed.image} />
+                  <img
+                    className="flex-1 object-cover min-w-[150px]"
+                    src={article.urlToImage as string}
+                  />
                 </CardHeader>
 
                 <CardContent className="flex-1 p-0 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <CardDescription className="text-xs font-semibold underline text-foreground">
-                      Business
+                      {article.source.name}
                     </CardDescription>
 
                     <Ellipsis size={20} />
                   </div>
 
                   <CardTitle className="text-lg text-foreground text-wrap text-ellipsis line-clamp-3">
-                    {feed.description}
+                    {article.description}
                   </CardTitle>
 
                   <CardDescription className="text-xs font-semibold text-foreground/40">
-                    Antonio Botosh • Dec, 11 2025
+                    {article.author}• {article.publishedAt}
                   </CardDescription>
                 </CardContent>
               </Card>
