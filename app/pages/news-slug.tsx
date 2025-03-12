@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import type { Route } from "../routes/+types/home";
 import {
   Link2,
   Heart,
@@ -19,18 +18,7 @@ import {
 } from "~/components/ui/breadcrumb";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Details" },
-    {
-      name: "description",
-      content:
-        "Welcome to Today's News, where you can find the latest news from around the world.",
-    },
-  ];
-}
-
-export default function Detailed() {
+export default function NewsSlug() {
   return (
     <>
       <main className="flex flex-col h-screen">
@@ -60,7 +48,7 @@ export default function Detailed() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink>
-                  <Link to="/components">Components</Link>
+                  <Link to="/">Components</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -181,11 +169,11 @@ export default function Detailed() {
               euismod justo at elit accumsan, at dictum libero hendrerit.
             </p>
             <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black text-white rounded-full px-4 py-2 flex items-center space-x-4 shadow-lg">
-              <button className="flex items-center space-x-1">
+              <button className="flex items-center cursor-pointer space-x-1">
                 <Heart className="w-5 h-5" />
               </button>
               <span className="h-6 w-px bg-white"></span>
-              <button className="flex items-center space-x-1">
+              <button className="flex items-center cursor-pointer space-x-1">
                 <MessageSquareMore className="w-5 h-5" />
                 <span>1.2k</span>
               </button>
