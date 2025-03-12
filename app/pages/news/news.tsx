@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import NewsAPI from "ts-newsapi";
 import Guardian from "guardian-js";
+import NewsAPI from "~/lib/news-api";
 
 import { Search, Ellipsis, ArrowRight, Calendar1 } from "lucide-react";
 
@@ -127,18 +127,16 @@ export function News() {
 
   useEffect(() => {
     async function fetch() {
-      const topHeadlines = await newsapi.getTopHeadlines({
-        country: "us",
-        category: "business",
-        pageSize: 20,
-        page: 1,
-      });
-
-      const football = guardian.content.search("football", {
-        tag: "sports",
-      });
-
-      console.log(football);
+      // const topHeadlines = await newsapi.getTopHeadlines({
+      //   country: "us",
+      //   category: "business",
+      //   pageSize: 20,
+      //   page: 1,
+      // });
+      // const football = guardian.content.search("football", {
+      //   tag: "sports",
+      // });
+      // console.log(football);
     }
 
     fetch();

@@ -38,7 +38,6 @@
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
-    "ts-newsapi": "^1.0.2",
     "usenonce": "^0.2.2",
     "zod": "^3.24.2"
   },
@@ -48,10 +47,10 @@
     "@types/node": "^20",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
+    "patch-package": "^8.0.0",
     "react-router-devtools": "^1.1.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
-    "patch-package": "^8.0.0",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4"
   },
