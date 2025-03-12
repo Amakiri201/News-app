@@ -136,7 +136,7 @@ export function NewsMobile() {
         >
           <div className="flex space-x-2 px-4">
             {TEST_TRENDING.map((feed) => (
-              <Card className="min-w-full h-[300px] p-0 rounded-2xl overflow-hidden relative">
+              <Card className=" min-w-[300px] h-[300px] p-0 rounded-2xl overflow-hidden relative">
                 <CardContent className="h-full p-0">
                   <img
                     src={feed.image}

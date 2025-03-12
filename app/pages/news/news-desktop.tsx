@@ -16,6 +16,22 @@ import {
   CardDescription,
 } from "~/components/ui/card";
 import React from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "~/components/ui/carousel";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
 
 const TEST_TABS = [
   "Politics",
@@ -68,26 +84,95 @@ const RECOMMENDED_TRENDING = [
   },
 ];
 
+const NEWS_DATA = [
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Webmoney",
+    headline: "WebMoney Adds Cryptocurrency Wallet for Users",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Stripe",
+    headline: "Stripe Launches New Payment Solution for Online Businesses",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Microsoft",
+    headline: "Microsoft Acquires AI Nuance Communications for $19.7 Billion",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Dribbble",
+    headline: "Dribbble Launches New Platform to Help Companies Hire Designers",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Webmoney",
+    headline: "WebMoney Adds Cryptocurrency Wallet for Users",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Stripe",
+    headline: "Stripe Launches New Payment Solution for Online Businesses",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Microsoft",
+    headline: "Microsoft Acquires AI Nuance Communications for $19.7 Billion",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+  {
+    logo: "https://github.com/shadcn.png",
+    company: "Dribbble",
+    headline: "Dribbble Launches New Platform to Help Companies Hire Designers",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
+  },
+];
+
 export function NewsDesktop() {
   const [tab, setTab] = useState(TEST_TABS[0]);
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
 
   return (
     <main className="flex flex-col h-screen">
       {/* START OF HEADER */}
       <header className="w-full">
-        <div className="flex max-lg:hidden w-full justify-between p-10 border-b ">
+        <div className="flex max-lg:hidden w-full justify-between p-10 xl:px-[15rem]">
           <div className="flex items-center space-x-2">
             <Button variant="outline" className="rounded-2xl size-10">
               <Menu className="size-5 opacity-50" />
             </Button>
-            <Button
-              variant="outline"
-              className="rounded-2xl size-10"
-              // onClick={() => setSearchVisible(!searchVisible)}
-            >
-              <Search className="size-5 opacity-50" />
-            </Button>
+
+            <Sheet>
+              <SheetTrigger>
+                <Button variant="outline" className="rounded-2xl size-10">
+                  <Search className="size-5 opacity-50" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Are you absolutely sure?</SheetTitle>
+                  <SheetDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
           </div>
 
           <div className="text-center flex-1">
@@ -106,8 +191,9 @@ export function NewsDesktop() {
             </Button>
           </div>
         </div>
+        <Separator className="my-4 h-[2px] bg-border/70" />
 
-        <div className="flex max-lg:hidden w-full p-4 border-b justify-center items-center ">
+        <div className="flex max-lg:hidden w-full justify-center items-center ">
           <div className="flex overflow-hidden px-10">
             <ScrollArea aria-orientation="horizontal" className="w-full ">
               <div className="flex w-max px-4 space-x-2">
@@ -117,7 +203,7 @@ export function NewsDesktop() {
                     variant="ghost"
                     onClick={() => setTab(t)}
                     className={cn(
-                      "bg-transparent text-#000 cursor-pointer hover:bg-transparent border-none"
+                      "bg-transparent text-gray-500 cursor-pointer hover:bg-transparent border-none"
                     )}
                   >
                     {t}
@@ -128,14 +214,14 @@ export function NewsDesktop() {
             </ScrollArea>
           </div>
         </div>
+        <Separator className="my-4 h-[2px] bg-border/70" />
       </header>
       {/* END OF HEADER */}
 
       {/* START OF TRENDING NOW */}
-      <section className="py-4 h-dvh">
-     
-        <div className="max-lg:hidden">
-          <div className="p-6 md:p-10">
+      <section className="h-dvh flex w-full p-4 flex-row mt-10 ">
+        <div className="max-lg:hidden flex justify-end self-end flex-[0.4]">
+          <div className="p-10">
             <div className="flex items-center space-x-2 text-gray-500 text-sm">
               <Calendar className="size-4" />
               <span>Mon 8 May 2023</span>
@@ -155,74 +241,79 @@ export function NewsDesktop() {
           </div>
         </div>
 
-        <div>
-          
+        <div className="flex-[0.6] flex justify-center items-center">
+          <Carousel className="w-full xl:max-w-2xl lg:max-w-xs">
+            <CarouselContent>
+              {TEST_TRENDING.map((feed, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-4">
+                    <Card>
+                      <CardContent className="flex h-full w-full p-0 aspect-square items-center justify-center">
+                        {/* <span className="text-4xl font-semibold">
+                          {index + 1}
+                        </span> */}
+                        <img
+                          src={feed.image}
+                          className="w-full h-full object-cover"
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </section>
+
       {/* END OF TRENDING NOW */}
 
       {/* START OF RESOURCES LIST */}
-      <section className="py-4">
-        <div className="lg:hidden">
+      <section className="xl:px-[15rem] h-dvh my-10">
+        <div>
           <ScrollArea
             aria-orientation="horizontal"
             className="w-full whitespace-nowrap"
           >
-            <div className="flex w-max px-4 space-x-2">
-              {[...Array(8)].map((_, index) => (
-                <Avatar
+            <div className="flex justify-center items-center w-full gap-10 flex-wrap">
+              {NEWS_DATA.map((news, index) => (
+                <div
                   key={index}
-                  className="size-16 bg-slate-200 flex items-center justify-center p-2"
+                  className="flex items-start space-x-3 max-w-[350px] text-wrap p-1"
                 >
-                  <AvatarImage
-                    className="rounded-full"
-                    src="https://github.com/shadcn.png"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                  {/* Logo */}
+                  <Avatar
+                    key={index}
+                    className="size-10flex items-center justify-center"
+                  >
+                    <AvatarImage className="rounded-full" src={news.logo} />
+                    <AvatarFallback className="text-[12px]">
+                      {news.headline.slice(0, 3).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* Text Content */}
+                  <div>
+                    <p className="text-gray-600 font-medium">{news.company}</p>
+                    <h2 className="text-lg font-semibold">{news.headline}</h2>
+                    <h2 className="text-sm font-light mt-5">
+                      {news.description}
+                    </h2>
+                  </div>
+                </div>
               ))}
             </div>
             <ScrollBar orientation="horizontal" hidden />
           </ScrollArea>
-        </div>
-
-        <div className="max-lg:hidden">
-          <p>my name is </p>
         </div>
       </section>
       {/* END OF RESOURCES LIST */}
 
-      {/* START OF TABS */}
-      <section className="py-2">
-        <div className="lg:hidden">
-          <ScrollArea aria-orientation="horizontal" className="w-full ">
-            <div className="flex w-max px-4 space-x-2">
-              {TEST_TABS.map((t) => (
-                <Button
-                  key={t}
-                  onClick={() => setTab(t)}
-                  className={cn(
-                    "px-4 py-2 rounded-full",
-                    tab !== t ? "bg-primary/30 text-primary-foreground/80" : ""
-                  )}
-                >
-                  {t}
-                </Button>
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" hidden />
-          </ScrollArea>
-        </div>
-
-        <div className="max-lg:hidden">
-          <p>my name is </p>
-        </div>
-      </section>
-      {/* END OF TABS */}
-
       {/* START OF RECOMMENDED */}
-      <section className="p-4">
-        <div className="lg:hidden">
+      <section className="px-[17rem]">
+        <div>
           <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
           {RECOMMENDED_TRENDING.map((feed, index) => (
@@ -256,10 +347,6 @@ export function NewsDesktop() {
               )}
             </React.Fragment>
           ))}
-        </div>
-
-        <div className="max-lg:hidden">
-          <p>my name is </p>
         </div>
       </section>
       {/* END OF RECOMMENDED */}
