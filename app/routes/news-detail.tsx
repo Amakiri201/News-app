@@ -2,8 +2,6 @@ import type { Route } from "./+types/home";
 import NewsSlug from "~/pages/news-slug";
 
 export function meta(args: Route.MetaArgs) {
-  console.log(args);
-
   return [
     { title: args.params.slug },
     {

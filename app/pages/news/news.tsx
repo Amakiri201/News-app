@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Ellipsis, ArrowRight } from "lucide-react";
+import { Ellipsis, ArrowRight } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
@@ -30,25 +30,16 @@ const TEST_TABS = [
 
 export function News({ articles, headlines, sources }: ArticleProp) {
   const [tab, setTab] = useState(TEST_TABS[0]);
-  const [visible, setVisible] = useState(false);
 
   return (
     <main className="flex flex-col h-screen">
       {/* START OF HEADER */}
       <header className="p-4">
-        <NewsSearch />
-
         {/* START OF MOBILE HEADER */}
         <div className="flex min-lg:hidden items-center justify-between">
           <h2 className="text-xl font-bold">Today News</h2>
           <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              className="rounded-full size-10"
-              onClick={() => setVisible(!visible)}
-            >
-              <Search className="size-5 opacity-50" />
-            </Button>
+            <NewsSearch />
           </div>
         </div>
         {/* END OF MOBILE HEADER */}
@@ -59,6 +50,8 @@ export function News({ articles, headlines, sources }: ArticleProp) {
             <Button variant="outline" className="rounded-2xl size-10">
               <ModeToggle />
             </Button>
+
+            <NewsSearch />
           </div>
 
           <div className="text-center flex-1">
@@ -211,7 +204,7 @@ export function News({ articles, headlines, sources }: ArticleProp) {
           className="w-full whitespace-nowrap"
         >
           <div className="flex items-center w-full gap-10 flex-wrap">
-            {sources.map((news, index) => (
+            {sources.map((news) => (
               <div
                 key={news.title}
                 className="flex items-start space-x-3 max-w-[350px] text-wrap p-1"
@@ -244,7 +237,7 @@ export function News({ articles, headlines, sources }: ArticleProp) {
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
-          {articles?.map((article, index) => (
+          {articles?.map((article) => (
             <div key={article.title}>
               <Card className=" max-w-[375px] h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
                 <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
