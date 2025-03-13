@@ -1,6 +1,7 @@
-import type { Route } from "./+types/home";
 import { News } from "~/pages/news/news";
-import { getAllArticles } from "~/lib/api";
+import type { Route } from "./+types/home";
+import { getNewsSources } from "~/lib/utils";
+import { getAllArticles, getHeadlines } from "~/lib/api";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,13 +13,17 @@ export function meta({}: Route.MetaArgs) {
     },
   ];
 }
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function loader({}: Route.ClientLoaderArgs) {
   const articles = await getAllArticles();
-  return articles;
+  const headlines = await getHeadlines();
+  const sources = getNewsSources();
+  return {
+    sources,
+    articles,
+    headlines,
+  };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData.articles);
-
-  return <News articles={loaderData.articles} />;
+  return <News {...loaderData} />;
 }

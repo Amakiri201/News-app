@@ -27,6 +27,7 @@ import {
   CarouselNext,
 } from "~/components/ui/carousel";
 import type { INewsApiArticle } from "~/lib/news-api/types";
+import { Headlines } from "./headlines";
 
 const TEST_TABS = [
   "Politics",
@@ -57,70 +58,8 @@ const TEST_TRENDING = [
     image: "https://i.ibb.co/4pSQJ06/apple-google.png",
   },
 ];
-const RECOMMENDED_TRENDING = [
-  {
-    title: "CNN",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-  {
-    title: "BBC",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-  {
-    title: "Al Jazeera",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-  {
-    title: "CNN",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-  {
-    title: "BBC",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-  {
-    title: "Al Jazeera",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-    image: "https://i.ibb.co/4pSQJ06/apple-google.png",
-  },
-];
 
-const NEWS_DATA = [
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Webmoney",
-    headline: "WebMoney Adds Cryptocurrency Wallet for Users",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Stripe",
-    headline: "Stripe Launches New Payment Solution for Online Businesses",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-  {
-    logo: "https://github.com/shadcn.png",
-    company: "Microsoft",
-    headline: "Microsoft Acquires AI Nuance Communications for $19.7 Billion",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos quia voluptas, doloremque, voluptate, molestias, quisquam",
-  },
-];
-
-export function News({ articles }: { articles: INewsApiArticle[] }) {
+export function News({ articles, headlines, sources }: ArticleProp) {
   const [tab, setTab] = useState(TEST_TABS[0]);
   const [visible, setVisible] = useState(false);
 
@@ -278,54 +217,7 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
 
       {/* DESKTOP TRENDING*/}
 
-      <section className="hidden lg:flex h-dvh  w-full p-4 flex-row mt-10 ">
-        <div className="flex justify-end self-end flex-[0.4]">
-          <div className="p-10">
-            <div className="flex items-center space-x-2 text-gray-500 text-sm">
-              <Calendar1 className="size-4" />
-              <span>Mon 8 May 2023</span>
-            </div>
-
-            <h1 className="mt-2 text-4xl md:text-6xl font-serif font-bold">
-              Stay informed
-            </h1>
-
-            <p className="mt-2 text-xl md:text-2xl text-gray-700">
-              Up-to-date with today’s top stories.
-            </p>
-
-            <p className="mt-4 text-gray-500 text-lg">
-              You know the news but don’t know the reason behind it
-            </p>
-          </div>
-        </div>
-
-        <div className="flex-[0.6] flex justify-center items-center">
-          <Carousel className="w-full xl:max-w-2xl lg:max-w-xs">
-            <CarouselContent>
-              {TEST_TRENDING.map((feed, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-4">
-                    <Card className="p-0 rounded-2xl overflow-hidden">
-                      <CardContent className="flex h-full w-full p-0 aspect-square items-center justify-center">
-                        {/* <span className="text-4xl font-semibold">
-                          {index + 1}
-                        </span> */}
-                        <img
-                          src={feed.image}
-                          className="w-full h-full object-cover"
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="size-15" />
-            <CarouselNext className="size-15" />
-          </Carousel>
-        </div>
-      </section>
+      <Headlines headlines={headlines} />
       {/* END OF TRENDING NOW */}
 
       {/* START OF TABS */}
@@ -357,7 +249,7 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
           className="w-full whitespace-nowrap"
         >
           <div className="flex items-center w-full gap-10 flex-wrap">
-            {NEWS_DATA.map((news, index) => (
+            {sources.map((news, index) => (
               <div
                 key={index}
                 className="flex items-start space-x-3 max-w-[350px] text-wrap p-1"
@@ -367,16 +259,15 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
                   key={index}
                   className="size-10flex items-center justify-center"
                 >
-                  <AvatarImage className="rounded-full" src={news.logo} />
+                  <AvatarImage className="rounded-full" src={news.image} />
                   <AvatarFallback className="text-[12px]">
-                    {news.headline.slice(0, 3).toUpperCase()}
+                    {news.name.slice(0, 3).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
 
                 {/* Text Content */}
                 <div>
-                  <p className="text-gray-600 font-medium">{news.company}</p>
-                  <h2 className="text-lg font-semibold">{news.headline}</h2>
+                  <h2 className="text-lg font-semibold">{news.title}</h2>
                   <h2 className="text-sm font-light mt-5">
                     {news.description}
                   </h2>
@@ -393,7 +284,7 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
       <section className="p-4 lg:hidden">
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
-        {RECOMMENDED_TRENDING.map((feed, index) => (
+        {articles.map((feed, index) => (
           <React.Fragment key={feed.title}>
             <Card className="min-w-full h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
               <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
@@ -403,7 +294,7 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
               <CardContent className="flex-1 p-0 flex flex-col justify-between">
                 <div className="flex items-center justify-between">
                   <CardDescription className="text-xs font-semibold underline text-foreground">
-                    Business
+                    {feed.source}
                   </CardDescription>
 
                   <Ellipsis size={20} />
@@ -414,12 +305,12 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
                 </CardTitle>
 
                 <CardDescription className="text-xs font-semibold text-foreground/40">
-                  Antonio Botosh • Dec, 11 2025
+                  {feed.author} • {feed.publishedAt}
                 </CardDescription>
               </CardContent>
             </Card>
 
-            {index !== RECOMMENDED_TRENDING.length - 1 && (
+            {index !== articles.length - 1 && (
               <Separator className="my-4 h-[2px] bg-border/70" />
             )}
           </React.Fragment>
@@ -432,20 +323,20 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
         <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
-          {articles.map((article, index) => (
+          {articles?.map((article, index) => (
             <div key={article.title}>
               <Card className=" max-w-[375px] h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
                 <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
                   <img
                     className="flex-1 object-cover min-w-[150px]"
-                    src={article.urlToImage as string}
+                    src={article.image}
                   />
                 </CardHeader>
 
                 <CardContent className="flex-1 p-0 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <CardDescription className="text-xs font-semibold underline text-foreground">
-                      {article.source.name}
+                      {article.source}
                     </CardDescription>
 
                     <Ellipsis size={20} />
@@ -456,19 +347,16 @@ export function News({ articles }: { articles: INewsApiArticle[] }) {
                   </CardTitle>
 
                   <CardDescription className="text-xs font-semibold text-foreground/40">
-                    {article.author}• {article.publishedAt}
+                    {article.tag}• {article.publishedAt}
                   </CardDescription>
                 </CardContent>
               </Card>
 
-              {index !== RECOMMENDED_TRENDING.length - 1 && (
-                <Separator className="my-4 h-[2px] max-w-[375px]  bg-border/70" />
-              )}
+              <Separator className="my-4 h-[2px] max-w-[375px]  bg-border/70" />
             </div>
           ))}
         </div>
       </section>
-      {/* END OF RECOMMENDED */}
     </main>
   );
 }
