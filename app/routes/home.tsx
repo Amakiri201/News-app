@@ -2,6 +2,7 @@ import { News } from "~/pages/news/news";
 import type { Route } from "./+types/home";
 import { getNewsSources } from "~/lib/utils";
 import { getAllArticles, getHeadlines } from "~/lib/api";
+import type { ApiNewsCategory } from "~/lib/news-api/types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,17 +14,32 @@ export function meta({}: Route.MetaArgs) {
     },
   ];
 }
-export async function loader({}: Route.ClientLoaderArgs) {
-  const articles = await getAllArticles();
-  const headlines = await getHeadlines();
+export async function clientLoader({}: Route.ClientLoaderArgs) {
+  // const articles = await getAllArticles();
+  // const headlines = await getHeadlines();
   const sources = getNewsSources();
+  const categories: ApiNewsCategory[] = [
+    "business",
+    "entertainment",
+    "general",
+    "health",
+    "science",
+    "sports",
+    "technology",
+  ];
+
   return {
     sources,
-    articles,
-    headlines,
+    articles: [],
+    headlines: [],
+    categories,
   };
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  return <News {...loaderData} />;
+export async function clientAction({ params }: Route.ClientActionArgs) {
+  console.log(params);
+}
+
+export default function Home({}: Route.ComponentProps) {
+  return <News />;
 }

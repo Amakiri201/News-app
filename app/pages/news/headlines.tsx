@@ -11,6 +11,7 @@ import {
   CarouselNext,
   type CarouselApi,
 } from "~/components/ui/carousel";
+import { Link } from "react-router";
 
 export function Headlines({ headlines }: Pick<ArticleProp, "headlines">) {
   const [current, setCurrent] = useState(0);
@@ -29,6 +30,10 @@ export function Headlines({ headlines }: Pick<ArticleProp, "headlines">) {
   }, [api]);
 
   const article = headlines[current];
+
+  if (!article) {
+    return null;
+  }
 
   return (
     <section className="hidden lg:flex h-dvh  w-full p-4 flex-row mt-10 justify-center">
@@ -57,7 +62,12 @@ export function Headlines({ headlines }: Pick<ArticleProp, "headlines">) {
         <CarouselContent>
           {headlines.map((feed, index) => (
             <CarouselItem key={index}>
-              <div className="p-4">
+              <Link
+                className="p-4"
+                to={feed.url}
+                target="_blank"
+                key={feed.title}
+              >
                 <Card className="p-0 rounded-2xl overflow-hidden">
                   <CardContent className="flex h-full w-full p-0 aspect-square items-center justify-center">
                     <img
@@ -66,7 +76,7 @@ export function Headlines({ headlines }: Pick<ArticleProp, "headlines">) {
                     />
                   </CardContent>
                 </Card>
-              </div>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>

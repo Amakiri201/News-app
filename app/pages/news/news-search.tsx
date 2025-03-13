@@ -1,24 +1,28 @@
-"use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { CalendarIcon, Search } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { useLoaderData } from "react-router";
+import { CalendarIcon, Search } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { cn } from "~/lib/utils";
+import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
+import { NewsSources } from "~/components/ui/news-sources";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
+
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
   FormItem,
   FormLabel,
+  FormField,
   FormMessage,
+  FormControl,
 } from "~/components/ui/form";
+
 import {
   Popover,
   PopoverContent,
@@ -27,33 +31,20 @@ import {
 
 import {
   Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
   SheetTitle,
+  SheetHeader,
+  SheetContent,
   SheetTrigger,
+  SheetDescription,
 } from "~/components/ui/sheet";
-import { useState } from "react";
-import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 const FormSchema = z.object({
-  start_date: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  end_date: z.date({
-    required_error: "A date of birth is required.",
-  }),
+  query: z.string().optional(),
+  start_date: z.date().optional(),
+  end_date: z.date().optional(),
+  category: z.string().optional(),
+  source: z.enum<NewsSource>(["GUARDIAN", "NEWS_API"]).optional(),
 });
-
-const TEST_TABS = [
-  "Politics",
-  "Technology",
-  "Education",
-  "Science",
-  "Sports",
-  "Business",
-];
 
 const DatePicker = ({ field, label }: any) => {
   return (
@@ -96,11 +87,14 @@ const DatePicker = ({ field, label }: any) => {
 };
 
 function NewsSearch() {
-  const [tab, setTab] = useState(TEST_TABS[0]);
+  const { categories } = useLoaderData<ArticleProp>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const selectedCategory = form.watch("category");
+  const selectedSource = form.watch("source");
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast("You submitted the following values:");
@@ -113,7 +107,7 @@ function NewsSearch() {
           <Search className="size-5 opacity-50" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="min-w-[550px] sm:w-[540px] p-1">
+      <SheetContent className="w-full lg:min-w-[550px] p-1">
         <SheetHeader>
           <SheetTitle className="text-2xl">Search News</SheetTitle>
           <SheetDescription>
@@ -127,11 +121,19 @@ function NewsSearch() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 flex flex-col w-full p-4"
           >
-            <input
-              type="text"
-              placeholder="Search your news..."
-              className="border p-2 rounded-md"
+            <FormField
+              name="query"
+              control={form.control}
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  placeholder="Search your news..."
+                  className="border p-2 rounded-md"
+                  {...field}
+                />
+              )}
             />
+
             <div className="flex justify-between">
               <FormField
                 name="start_date"
@@ -150,57 +152,49 @@ function NewsSearch() {
               />
             </div>
 
-            <div>
-              <p className="mt-5 text-1xl font-semibold">Category</p>
+            <p className="mt-5 text-1xl font-semibold">Category</p>
 
-              <ScrollArea
-                aria-orientation="horizontal"
-                className="w-full mt-2 "
-              >
-                <div className="flex w-max px-4 space-x-2">
-                  {TEST_TABS.map((t) => (
-                    <Button
-                      key={t}
-                      onClick={() => setTab(t)}
-                      className={cn(
-                        "px-4 py-2 rounded-full",
-                        tab !== t
-                          ? "bg-primary/30 text-primary-foreground/80"
-                          : ""
-                      )}
-                    >
-                      {t}
-                    </Button>
-                  ))}
-                </div>
-                <ScrollBar orientation="horizontal" hidden />
-              </ScrollArea>
-            </div>
+            <FormField
+              name="category"
+              control={form.control}
+              render={({ field }) => (
+                <ScrollArea
+                  aria-orientation="horizontal"
+                  className="w-full mt-2 "
+                >
+                  <div className="flex w-max px-4 space-x-2">
+                    {categories.map((t) => (
+                      <Button
+                        key={t}
+                        type="button"
+                        onClick={() => field.onChange(t)}
+                        className={cn(
+                          "px-4 py-2 rounded-full capitalize",
+                          selectedCategory !== t
+                            ? "bg-primary/30 text-primary-foreground/80"
+                            : ""
+                        )}
+                      >
+                        {t}
+                      </Button>
+                    ))}
+                  </div>
+                  <ScrollBar orientation="horizontal" hidden />
+                </ScrollArea>
+              )}
+            />
 
-            <div>
-              <p className="mt-5 text-1xl font-semibold">Source</p>
-
-              <ScrollArea
-                aria-orientation="horizontal"
-                className="w-full whitespace-nowrap mt-2"
-              >
-                <div className="flex w-max px-4 space-x-2">
-                  {[...Array(8)].map((_, index) => (
-                    <Avatar
-                      key={index}
-                      className="size-16 bg-slate-200 flex items-center justify-center p-2"
-                    >
-                      <AvatarImage
-                        className="rounded-full"
-                        src="https://github.com/shadcn.png"
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  ))}
-                </div>
-                <ScrollBar orientation="horizontal" hidden />
-              </ScrollArea>
-            </div>
+            <p className="mt-5 mb-2 text-1xl font-semibold">Source</p>
+            <FormField
+              name="source"
+              control={form.control}
+              render={({ field }) => (
+                <NewsSources
+                  selected={selectedSource}
+                  onSelect={(selected) => field.onChange(selected)}
+                />
+              )}
+            />
 
             <Button className="mt-6 w-40 self-end" type="submit">
               Submit

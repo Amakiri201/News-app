@@ -22,4 +22,5 @@ type ArticleProp = {
   articles: Article[];
   headlines: Article[];
   sources: NewsSourceDetails[];
+  categories: string[];
 };

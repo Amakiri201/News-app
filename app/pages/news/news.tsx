@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useFetcher, useLoaderData } from "react-router";
 import { Ellipsis, ArrowRight } from "lucide-react";
 
 import { cn } from "~/lib/utils";
@@ -18,18 +19,12 @@ import {
 import NewsSearch from "./news-search";
 import { Headlines } from "./headlines";
 import { ModeToggle } from "~/components/ui/mode-toggle";
+import { NewsSources } from "~/components/ui/news-sources";
 
-const TEST_TABS = [
-  "Sports",
-  "Science",
-  "Politics",
-  "Business",
-  "Education",
-  "Technology",
-];
-
-export function News({ articles, headlines, sources }: ArticleProp) {
-  const [tab, setTab] = useState(TEST_TABS[0]);
+export function News() {
+  const fetcher = useFetcher();
+  const { articles, sources, headlines, categories } =
+    useLoaderData<ArticleProp>();
 
   return (
     <main className="flex flex-col h-screen">
@@ -77,11 +72,10 @@ export function News({ articles, headlines, sources }: ArticleProp) {
           <div className="flex overflow-hidden px-10">
             <ScrollArea aria-orientation="horizontal" className="w-full ">
               <div className="flex w-max px-4 space-x-2">
-                {TEST_TABS.map((t) => (
+                {categories.map((t) => (
                   <Button
                     key={t}
                     variant="ghost"
-                    onClick={() => setTab(t)}
                     className={cn(
                       "bg-transparent text-gray-500 cursor-pointer hover:bg-transparent border-none"
                     )}
@@ -101,26 +95,7 @@ export function News({ articles, headlines, sources }: ArticleProp) {
 
       {/* START OF MOBILE NEWS SOURCES */}
       <section className="lg:hidden py-4 ">
-        <ScrollArea
-          aria-orientation="horizontal"
-          className="w-full whitespace-nowrap"
-        >
-          <div className="flex w-max px-4 space-x-4">
-            {sources.map((source, index) => (
-              <div>
-                <Avatar
-                  key={index}
-                  className="size-16 bg-slate-200 flex items-center justify-center p-2"
-                >
-                  <AvatarImage className="rounded-full" src={source.image} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <p className="text-sm font-medium mt-2">{source.name}</p>
-              </div>
-            ))}
-          </div>
-          <ScrollBar orientation="horizontal" hidden />
-        </ScrollArea>
+        <NewsSources selected="" onSelect={() => {}} />
       </section>
       {/* END OF MOBILE NEWS SOURCES */}
 
@@ -134,35 +109,37 @@ export function News({ articles, headlines, sources }: ArticleProp) {
         >
           <div className="flex space-x-2 px-4">
             {headlines.map((feed) => (
-              <Card
-                className=" min-w-[300px] h-[300px] p-0 rounded-2xl overflow-hidden relative"
-                key={feed.title}
-              >
-                <CardContent className="h-full p-0">
-                  <img
-                    src={feed.image}
-                    className="w-full h-full object-cover"
-                  />
-                </CardContent>
+              <Link to={feed.url} target="_blank" key={feed.title}>
+                <Card className=" min-w-[300px] h-[300px] p-0 rounded-2xl overflow-hidden relative">
+                  <CardContent className="h-full p-0">
+                    <img
+                      src={feed.image}
+                      className="w-full h-full object-cover"
+                    />
+                  </CardContent>
 
-                {/* Gradient overlay */}
-                <div className="absolute w-full h-full top-0 left-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  {/* Gradient overlay */}
+                  <div className="absolute w-full h-full top-0 left-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-                <CardFooter className="flex-col absolute bottom-0 p-4 space-y-5 w-full items-start">
-                  <CardTitle className="text-xl text-white text-wrap  line-clamp-2">
-                    {feed.title}
-                  </CardTitle>
+                  <CardFooter className="flex-col absolute bottom-0 p-4 space-y-5 w-full items-start">
+                    <CardTitle className="text-xl text-white text-wrap  line-clamp-2">
+                      {feed.title}
+                    </CardTitle>
 
-                  <div className="flex items-center space-x-2">
-                    <Avatar className="size-8">
-                      <AvatarImage className="rounded-full" src={feed.image} />
-                    </Avatar>
-                    <CardDescription className="text-sm text-white">
-                      {feed.source} • {feed.publishedAt}
-                    </CardDescription>
-                  </div>
-                </CardFooter>
-              </Card>
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="size-8">
+                        <AvatarImage
+                          className="rounded-full"
+                          src={feed.image}
+                        />
+                      </Avatar>
+                      <CardDescription className="text-sm text-white">
+                        {feed.source} • {feed.publishedAt}
+                      </CardDescription>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             ))}
           </div>
 
@@ -179,13 +156,12 @@ export function News({ articles, headlines, sources }: ArticleProp) {
       <section className="py-2 lg:hidden">
         <ScrollArea aria-orientation="horizontal" className="w-full ">
           <div className="flex w-max px-4 space-x-2">
-            {TEST_TABS.map((t) => (
+            {categories.map((t) => (
               <Button
                 key={t}
-                onClick={() => setTab(t)}
                 className={cn(
-                  "px-4 py-2 rounded-full",
-                  tab !== t ? "bg-primary/30 text-primary-foreground/80" : ""
+                  "px-4 py-2 rounded-full"
+                  // tab !== t ? "bg-primary/30 text-primary-foreground/80" : ""
                 )}
               >
                 {t}
@@ -233,12 +209,12 @@ export function News({ articles, headlines, sources }: ArticleProp) {
       {/* END OF DESKTOP NEWS SOURCES*/}
 
       {/* START OF RECOMMENDED */}
-      <section className="w-full lg:w-[70%] lg:self-center">
+      <section className="w-full lg:w-[70%] lg:self-center p-5">
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
           {articles?.map((article) => (
-            <div key={article.title}>
+            <Link to={article.url} target="_blank" key={article.title}>
               <Card className=" max-w-[375px] h-[150px] p-0 rounded-none flex-row border-0 shadow-none gap-5 border-foreground/5">
                 <CardHeader className="w-[33%] h-full p-0 rounded-xs overflow-hidden">
                   <img
@@ -267,11 +243,22 @@ export function News({ articles, headlines, sources }: ArticleProp) {
               </Card>
 
               <Separator className="my-4 h-[2px] max-w-[375px]  bg-border/70" />
-            </div>
+            </Link>
           ))}
         </div>
       </section>
       {/* END OF RECOMMENDED */}
+
+      {/* START OF PAGINATION */}
+      <fetcher.Form
+        method="get"
+        className="w-full flex py-10 items-center justify-center"
+      >
+        <Button className="px-10" type="submit">
+          {fetcher.state === "loading" ? "Loading..." : "Load More"}
+        </Button>
+      </fetcher.Form>
+      {/* END OF PAGINATION */}
     </main>
   );
 }

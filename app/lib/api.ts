@@ -17,20 +17,22 @@ export const getHeadlines = async () => {
   return formatNewsAPI(response);
 };
 
-export const getNewsAPIArticles = async () => {
+export const getNewsAPIArticles = async (page: number) => {
   const response = await newsAPI.getEverything({
     sources: ["bbc-news", "google-news", "al-jazeera-english"],
     language: "en",
     sortBy: "relevancy",
     pageSize: 10,
-    page: 1,
+    page,
   });
 
   return formatNewsAPI(response);
 };
 
-export const getGuardianArticles = async () => {
-  const response = await guardian.content.search("", {});
+export const getGuardianArticles = async (page: number) => {
+  const response = await guardian.content.search("", {
+    page,
+  });
   const formattedArticles: Article[] = response.results.map((article: any) => ({
     source: "GUARDIAN",
     url: article.webUrl,
@@ -45,9 +47,9 @@ export const getGuardianArticles = async () => {
   return formattedArticles;
 };
 
-export const getAllArticles = async () => {
-  const newsAPIArticles = await getNewsAPIArticles();
-  const guardianArticles = await getGuardianArticles();
+export const getAllArticles = async (page = 1) => {
+  const newsAPIArticles = await getNewsAPIArticles(page);
+  const guardianArticles = await getGuardianArticles(page);
   return newsAPIArticles.concat(guardianArticles);
 };
 
@@ -56,4 +58,8 @@ export const getAllArticles = async () => {
 export const searchArticles = async () => {
   // Make a request to the NewsAPI API
   // Make a request to the Guardian API
+};
+
+export const fetchNextPage = async (page = 1) => {
+  getAllArticles(page);
 };
