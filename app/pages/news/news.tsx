@@ -233,7 +233,7 @@ export function News({ articles, headlines, sources }: ArticleProp) {
       {/* END OF DESKTOP NEWS SOURCES*/}
 
       {/* START OF RECOMMENDED */}
-      <section className="w-full lg:w-[70%]">
+      <section className="w-full lg:w-[70%] lg:self-center">
         <h2 className="text-l font-semibold mb-4">Recommended</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 flex-wrap">
