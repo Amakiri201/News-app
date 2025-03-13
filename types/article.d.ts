@@ -12,7 +12,7 @@ type Article = {
 type NewsSource = "GUARDIAN" | "NEWS_API";
 
 type NewsSourceDetails = {
-  name: NewsSource;
+  name: string;
   image: string;
   title: string;
   description: string;

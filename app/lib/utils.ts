@@ -5,7 +5,7 @@ import type { INewsApiResponse } from "./news-api/types";
 
 export const newsSourceDetails: Record<NewsSource, NewsSourceDetails> = {
   GUARDIAN: {
-    name: "GUARDIAN",
+    name: "Guardian",
     image:
       "https://assets-legacy.floridarrc.com/2023/01/guardian-logo-square.jpg",
     title:
@@ -14,7 +14,7 @@ export const newsSourceDetails: Record<NewsSource, NewsSourceDetails> = {
       "Latest breaking news, analysis, and opinion on global events, politics, business, culture, and more from The Guardian.",
   },
   NEWS_API: {
-    name: "NEWS_API",
+    name: "News API",
     title: "NewsAPI - Global News Aggregator for Breaking Stories & Headlines",
     description:
       "NewsAPI delivers the latest breaking news, headlines, and articles from top news sources worldwide, covering politics, business, technology, sports, and more.",
